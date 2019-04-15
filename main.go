@@ -32,7 +32,10 @@ func main() {
 		for _, sg := range descSGOut.SecurityGroups {
 			for _, ingress := range sg.IpPermissions {
 				if (ingress.FromPort != nil && *ingress.FromPort == 80 && *ingress.ToPort == 80) ||
-					(ingress.ToPort != nil && *ingress.FromPort == 443 && *ingress.ToPort == 443) {
+					(ingress.ToPort != nil && *ingress.FromPort == 443 && *ingress.ToPort == 443) ||
+					(ingress.ToPort != nil && *ingress.FromPort == 25 && *ingress.ToPort == 25) ||
+					(ingress.ToPort != nil && *ingress.FromPort == 465 && *ingress.ToPort == 465) ||
+					(ingress.ToPort != nil && *ingress.FromPort == 587 && *ingress.ToPort == 587) {
 					continue
 				}
 
@@ -48,7 +51,7 @@ func main() {
 								toPort = *ingress.ToPort
 							}
 
-							log.Printf(`Unsafe security group. ID: %s, Name: %s, FromPort: %d, ToPort: %d`,
+							log.Printf(`Unsafe security group. ID: %s , Name: %s, FromPort: %d, ToPort: %d`,
 								*sg.GroupId, *sg.GroupName,
 								fromPort, toPort)
 						}
